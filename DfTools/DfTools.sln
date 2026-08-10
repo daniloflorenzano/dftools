@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Desktop", "DfTools.Desktop\DfTools.Desktop.csproj", "{FA971933-1033-4E21-BECD-71C6073523AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Tests", "DfTools.Tests\DfTools.Tests.csproj", "{67D01840-7CC3-49A3-B31E-848321CA755B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Sql", "DfTools.Sql\DfTools.Sql.csproj", "{12FEEE17-E612-4B5C-9323-7626D6915E7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA971933-1033-4E21-BECD-71C6073523AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA971933-1033-4E21-BECD-71C6073523AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA971933-1033-4E21-BECD-71C6073523AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA971933-1033-4E21-BECD-71C6073523AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D01840-7CC3-49A3-B31E-848321CA755B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D01840-7CC3-49A3-B31E-848321CA755B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D01840-7CC3-49A3-B31E-848321CA755B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D01840-7CC3-49A3-B31E-848321CA755B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12FEEE17-E612-4B5C-9323-7626D6915E7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12FEEE17-E612-4B5C-9323-7626D6915E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12FEEE17-E612-4B5C-9323-7626D6915E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12FEEE17-E612-4B5C-9323-7626D6915E7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
