@@ -13,11 +13,35 @@ Df stands for Danilo Florenzano (very creative, don't you think?)
 - **Keyboard-First Interface**: Streamlined navigation and actions optimized for keyboard productivity without requiring mouse interaction.
 - **SQL Query Formatter**: Formats and beautifies complex SQL queries cleanly. Powered by a C# port of [doctrine/sql-formatter](https://github.com/doctrine/sql-formatter).
 
+## Installation & Running
+
+Download the pre-built zip for your operating system from the [Latest Release](https://github.com/daniloflorenzano/dftools/releases/latest).
+
+### Linux
+
+1. Download `dftools-v0.1.0-linux-x64.zip`.
+2. Extract the archive:
+   ```bash
+   unzip dftools-v0.1.0-linux-x64.zip -d dftools
+   cd dftools
+   ```
+3. Make executable (if needed) and run:
+   ```bash
+   chmod +x DfTools
+   ./DfTools
+   ```
+
+### Windows
+
+1. Download `dftools-v0.1.0-win-x64.zip`.
+2. Extract the zip folder.
+3. Double-click `DfTools.exe` (or run `.\DfTools.exe` in PowerShell / Command Prompt).
+
+
 ## Project Goals
 
 - Provide an extensible framework for developer utilities in .NET.
 - Validate desktop app UI/UX patterns for quick-access developer tooling.
-- Maintain minimal resource usage and instant startup times.
 
 ## Credits & Inspiration
 
