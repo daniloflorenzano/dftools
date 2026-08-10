@@ -1,6 +1,6 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cc626cb6_002D2db1_002D448a_002Db16f_002Dbbee66003b84/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="FormatQuery_Should_Work" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;ProjectFolder&gt;67D01840-7CC3-49A3-B31E-848321CA755B/d:SqlTests&lt;/ProjectFolder&gt;
+  &lt;Project Location="/home/df/Projects/dftools/DfTools/DfTools.Tests" Presentation="&amp;lt;DfTools.Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f5f1b649_002Dbf1e_002D4e2c_002D8926_002D31226e543df1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FormatQuery_Should_Work #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
