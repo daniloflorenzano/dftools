@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using DfTools.Desktop.Generated;
 using DfTools.Desktop.Models;
 
 namespace DfTools.Desktop.Services;
@@ -19,11 +20,6 @@ public class SettingsService
     {
         // Settings file resides alongside app binaries / source directory for developers to edit directly
         SettingsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-
-        if (!File.Exists(SettingsFilePath))
-        {
-            SaveSettings(new AppSettings());
-        }
     }
 
     public AppSettings LoadSettings()
@@ -39,10 +35,10 @@ public class SettingsService
         }
         catch
         {
-            // Fallback to default in-memory settings if file read error occurs
+            // Fallback to default generated settings if file read error occurs
         }
 
-        return new AppSettings();
+        return GeneratedAppSettings.Default;
     }
 
     public bool SaveSettings(AppSettings settings)

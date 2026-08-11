@@ -1,6 +1,8 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Desktop", "DfTools.Desktop\DfTools.Desktop.csproj", "{FA971933-1033-4E21-BECD-71C6073523AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Generators", "DfTools.Generators\DfTools.Generators.csproj", "{A4B92C3D-5E6F-7A8B-9C0D-1E2F3A4B5C6D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfTools.Tests", "DfTools.Tests\DfTools.Tests.csproj", "{67D01840-7CC3-49A3-B31E-848321CA755B}"
 EndProject

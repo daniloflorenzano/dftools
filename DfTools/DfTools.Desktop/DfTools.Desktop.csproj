@@ -10,14 +10,17 @@
     <ItemGroup>
         <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
+        <AdditionalFiles Include="appsettings.json" />
         <None Update="appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\DfTools.Sql\DfTools.Sql.csproj" />
         <ProjectReference Include="..\DfTools.Diff\DfTools.Diff.csproj" />
+        <ProjectReference Include="..\DfTools.Generators\DfTools.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
     <ItemGroup>

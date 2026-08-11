@@ -20,6 +20,16 @@ public class DesktopAppTests
     }
 
     [Test]
+    public void GeneratedAppSettings_HasValuesFromAppSettingsJson()
+    {
+        var generated = DfTools.Desktop.Generated.GeneratedAppSettings.Default;
+        Assert.That(generated, Is.Not.Null);
+        Assert.That(generated.Text.AppTitle, Is.EqualTo("DFTOOLS"));
+        Assert.That(generated.Theme.BackgroundColor, Is.EqualTo("#000000"));
+        Assert.That(generated.SqlFormatter.IndentString, Is.EqualTo("  "));
+    }
+
+    [Test]
     public void SettingsService_CanLoadAndSaveSettings()
     {
         var service = new SettingsService();
