@@ -463,7 +463,7 @@
                 </StackPanel>
 
                 <TextBlock Grid.Column="2"
-                           Text="DFTOOLS v1.0.0 | KEYBOARD-FIRST EDITION"
+                           Text="DFTOOLS v0.2.0"
                            Foreground="{Binding Settings.Theme.SecondaryTextColor}" />
             </Grid>
         </Border>
