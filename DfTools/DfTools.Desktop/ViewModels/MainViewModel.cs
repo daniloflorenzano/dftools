@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DfTools.Desktop.Models;
 using DfTools.Desktop.Services;
+using DfTools.Diff;
 using DfTools.Sql;
 
 namespace DfTools.Desktop.ViewModels;
@@ -14,6 +15,7 @@ public partial class MainViewModel : ViewModelBase
 {
     private readonly SettingsService _settingsService;
     private readonly QueryFormatter _sqlFormatter = new();
+    private readonly ITextDiffer _textDiffer = new TextDiffer();
 
     [ObservableProperty]
     private AppSettings _settings;
@@ -31,6 +33,19 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private string _sqlOutput = string.Empty;
 
+    // Text Differ Tool
+    [ObservableProperty]
+    private string _diffOldInput = string.Empty;
+
+    [ObservableProperty]
+    private string _diffNewInput = string.Empty;
+
+    [ObservableProperty]
+    private SideBySideDiffResult? _diffResult;
+
+    [ObservableProperty]
+    private bool _isDiffEditMode = true;
+
     // Command Palette Overlay
     [ObservableProperty]
     private bool _isCommandPaletteOpen;
@@ -43,9 +58,12 @@ public partial class MainViewModel : ViewModelBase
         _settings = _settingsService.LoadSettings();
 
         SqlInput = Settings.SqlFormatter.DefaultQuery;
+        DiffOldInput = Settings.DiffTool.DefaultOldText;
+        DiffNewInput = Settings.DiffTool.DefaultNewText;
         StatusMessage = Settings.Text.StatusReady;
 
         InitializeCommands();
+        CompareDiff();
     }
 
     private void InitializeCommands()
@@ -53,25 +71,25 @@ public partial class MainViewModel : ViewModelBase
         AllCommands.Add(new CommandItem
         {
             Shortcut = "F5",
-            Title = "Format SQL",
-            Description = "Format SQL query in the editor",
-            Action = FormatSql
+            Title = "Execute / Process",
+            Description = "Format SQL query or compare text diff",
+            Action = ExecuteCurrentTool
         });
 
         AllCommands.Add(new CommandItem
         {
             Shortcut = "F6",
-            Title = "Copy Formatted SQL",
-            Description = "Copy formatted result to clipboard",
-            Action = () => _ = CopySql()
+            Title = "Copy Output",
+            Description = "Copy formatted result or diff summary to clipboard",
+            Action = () => _ = CopyCurrentToolOutput()
         });
 
         AllCommands.Add(new CommandItem
         {
             Shortcut = "F7",
-            Title = "Clear Input SQL",
-            Description = "Clear input text area",
-            Action = ClearSql
+            Title = "Clear Input",
+            Description = "Clear input text areas for active tool",
+            Action = ClearCurrentToolInput
         });
 
         AllCommands.Add(new CommandItem
@@ -88,6 +106,45 @@ public partial class MainViewModel : ViewModelBase
     {
         SelectedTabIndex = index;
         IsCommandPaletteOpen = false;
+    }
+
+    [RelayCommand]
+    public void ExecuteCurrentTool()
+    {
+        if (SelectedTabIndex == 0)
+        {
+            FormatSql();
+        }
+        else if (SelectedTabIndex == 1)
+        {
+            CompareDiff();
+        }
+    }
+
+    [RelayCommand]
+    public async Task CopyCurrentToolOutput()
+    {
+        if (SelectedTabIndex == 0)
+        {
+            await CopySql();
+        }
+        else if (SelectedTabIndex == 1)
+        {
+            await CopyDiffSummary();
+        }
+    }
+
+    [RelayCommand]
+    public void ClearCurrentToolInput()
+    {
+        if (SelectedTabIndex == 0)
+        {
+            ClearSql();
+        }
+        else if (SelectedTabIndex == 1)
+        {
+            ClearDiff();
+        }
     }
 
     [RelayCommand]
@@ -129,6 +186,46 @@ public partial class MainViewModel : ViewModelBase
             if (topLevel?.Clipboard != null)
             {
                 await topLevel.Clipboard.SetTextAsync(SqlOutput);
+                StatusMessage = Settings.Text.StatusCopied;
+            }
+        }
+    }
+
+    [RelayCommand]
+    public void CompareDiff()
+    {
+        DiffResult = _textDiffer.CompareSideBySide(DiffOldInput, DiffNewInput);
+        IsDiffEditMode = false;
+        StatusMessage = Settings.Text.StatusDiffed;
+    }
+
+    [RelayCommand]
+    public void EditDiffInputs()
+    {
+        IsDiffEditMode = true;
+        StatusMessage = Settings.Text.StatusReady;
+    }
+
+    [RelayCommand]
+    public void ClearDiff()
+    {
+        DiffOldInput = string.Empty;
+        DiffNewInput = string.Empty;
+        DiffResult = _textDiffer.CompareSideBySide(string.Empty, string.Empty);
+        IsDiffEditMode = true;
+        StatusMessage = Settings.Text.StatusCleared;
+    }
+
+    [RelayCommand]
+    public async Task CopyDiffSummary()
+    {
+        if (DiffResult != null && Avalonia.Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow != null)
+        {
+            var topLevel = Avalonia.Controls.TopLevel.GetTopLevel(desktop.MainWindow);
+            if (topLevel?.Clipboard != null)
+            {
+                var summary = $"DFTOOLS TEXT DIFF RESULT:\nHas Differences: {DiffResult.HasDifferences}\nOld Lines: {DiffResult.OldText.Lines.Count}\nNew Lines: {DiffResult.NewText.Lines.Count}";
+                await topLevel.Clipboard.SetTextAsync(summary);
                 StatusMessage = Settings.Text.StatusCopied;
             }
         }
