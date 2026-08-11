@@ -12,6 +12,7 @@ Df stands for Danilo Florenzano (very creative, don't you think?)
 
 - **Keyboard-First Interface**: Streamlined navigation and actions optimized for keyboard productivity without requiring mouse interaction.
 - **SQL Query Formatter**: Formats and beautifies complex SQL queries cleanly. Powered by a C# port of [doctrine/sql-formatter](https://github.com/doctrine/sql-formatter).
+- **Text Diff**: Compares two text snippets line-by-line and character-by-character using side-by-side visualization. Powered by [DiffPlex](https://github.com/mmanela/diffplex).
 
 ## Installation & Running
 
@@ -19,10 +20,10 @@ Download the pre-built zip for your operating system from the [Latest Release](h
 
 ### Linux
 
-1. Download `dftools-v0.1.0-linux-x64.zip`.
+1. Download `dftools-v0.2.0-linux-x64.zip`.
 2. Extract the archive:
    ```bash
-   unzip dftools-v0.1.0-linux-x64.zip -d dftools
+   unzip dftools-v0.2.0-linux-x64.zip -d dftools
    cd dftools
    ```
 3. Make executable (if needed) and run:
@@ -33,7 +34,7 @@ Download the pre-built zip for your operating system from the [Latest Release](h
 
 ### Windows
 
-1. Download `dftools-v0.1.0-win-x64.zip`.
+1. Download `dftools-v0.2.0-win-x64.zip`.
 2. Extract the zip folder.
 3. Double-click `DfTools.exe` (or run `.\DfTools.exe` in PowerShell / Command Prompt).
 
@@ -47,7 +48,9 @@ Download the pre-built zip for your operating system from the [Latest Release](h
 
 - Inspired by [DevToolbox](https://github.com/aleiepure/devtoolbox) by [aleiepure](https://github.com/aleiepure).
 - SQL formatting logic ported from [doctrine/sql-formatter](https://github.com/doctrine/sql-formatter).
+- Text diff engine powered by [DiffPlex](https://github.com/mmanela/diffplex) by [mmanela](https://github.com/mmanela).
 
 ## License
 
 MIT License.
+
