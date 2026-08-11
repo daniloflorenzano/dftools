@@ -125,4 +125,55 @@ public class DiffPlexSideBySideLearningTests
             Assert.That(result.NewText.Lines, Is.Empty);
         });
     }
+
+    [Test]
+    public void BuildDiffModel_WithSpaceSeparatedText_IdentifiesWordLevelDifferencesInSubPieces()
+    {
+        // Arrange: "hello world 1" vs "hello world 2"
+        const string oldText = "hello world 1";
+        const string newText = "hello world 2";
+
+        // Act
+        var result = _diffBuilder.BuildDiffModel(oldText, newText);
+
+        // Assert: DiffPlex splits words and identifies 'hello' and 'world' as Unchanged, and '1' vs '2' as Deleted/Inserted
+        var oldSubPieces = result.OldText.Lines[0].SubPieces;
+        var newSubPieces = result.NewText.Lines[0].SubPieces;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(oldSubPieces.Where(p => p.Type == ChangeType.Unchanged).Select(p => p.Text), Is.EquivalentTo(new[] { "hello", " ", "world", " " }));
+            Assert.That(oldSubPieces.First(p => p.Type == ChangeType.Deleted).Text, Is.EqualTo("1"));
+
+            Assert.That(newSubPieces.Where(p => p.Type == ChangeType.Unchanged).Select(p => p.Text), Is.EquivalentTo(new[] { "hello", " ", "world", " " }));
+            Assert.That(newSubPieces.First(p => p.Type == ChangeType.Inserted).Text, Is.EqualTo("2"));
+        });
+    }
+
+    [Test]
+    public void BuildDiffModel_WithSingleWordDifference_TreatsEntireWordAsSubPiece()
+    {
+        // Arrange: "text1" vs "text2" (single contiguous word token without spaces)
+        const string oldText = "text1";
+        const string newText = "text2";
+
+        // Act
+        var result = _diffBuilder.BuildDiffModel(oldText, newText);
+
+        // Assert: Because DiffPlex defaults to word chunking (space/punctuation delimiters),
+        // single continuous tokens like "text1" vs "text2" treat the whole token as a single deleted/inserted subpiece.
+        var oldSubPieces = result.OldText.Lines[0].SubPieces;
+        var newSubPieces = result.NewText.Lines[0].SubPieces;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(oldSubPieces, Has.Count.EqualTo(1));
+            Assert.That(oldSubPieces[0].Text, Is.EqualTo("text1"));
+            Assert.That(oldSubPieces[0].Type, Is.EqualTo(ChangeType.Deleted));
+
+            Assert.That(newSubPieces, Has.Count.EqualTo(1));
+            Assert.That(newSubPieces[0].Text, Is.EqualTo("text2"));
+            Assert.That(newSubPieces[0].Type, Is.EqualTo(ChangeType.Inserted));
+        });
+    }
 }

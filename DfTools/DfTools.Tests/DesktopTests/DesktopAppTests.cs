@@ -2,6 +2,8 @@ using NUnit.Framework;
 using DfTools.Desktop.Models;
 using DfTools.Desktop.Services;
 using DfTools.Desktop.Converters;
+using DfTools.Desktop.ViewModels;
+using DfTools.Diff;
 
 namespace DfTools.Tests.DesktopTests;
 
@@ -14,6 +16,7 @@ public class DesktopAppTests
         var settings = new AppSettings();
         Assert.That(settings.Theme.BackgroundColor, Is.EqualTo("#000000"));
         Assert.That(settings.Text.FormatButtonText, Is.EqualTo("[F5] FORMAT"));
+        Assert.That(settings.DiffTool.DefaultOldText, Is.Not.Empty);
     }
 
     [Test]
@@ -33,5 +36,30 @@ public class DesktopAppTests
         var converter = IntEqualsConverter.Instance;
         Assert.That(converter.Convert(0, typeof(bool), "0", System.Globalization.CultureInfo.InvariantCulture), Is.True);
         Assert.That(converter.Convert(0, typeof(bool), "1", System.Globalization.CultureInfo.InvariantCulture), Is.False);
+    }
+
+    [Test]
+    public void MainViewModel_CompareDiff_ComputesDiffResult()
+    {
+        var vm = new MainViewModel();
+        vm.DiffOldInput = "Line A";
+        vm.DiffNewInput = "Line B";
+        vm.CompareDiff();
+
+        Assert.That(vm.DiffResult, Is.Not.Null);
+        Assert.That(vm.DiffResult!.HasDifferences, Is.True);
+        Assert.That(vm.IsDiffEditMode, Is.False);
+    }
+
+    [Test]
+    public void DiffChangeTypeToBrushConverter_ReturnsBrushesForChangeTypes()
+    {
+        var converter = DiffChangeTypeToBrushConverter.Instance;
+
+        var bgBrush = converter.Convert(DiffChangeType.Inserted, typeof(Avalonia.Media.IBrush), "Background", System.Globalization.CultureInfo.InvariantCulture);
+        var fgBrush = converter.Convert(DiffChangeType.Inserted, typeof(Avalonia.Media.IBrush), "Foreground", System.Globalization.CultureInfo.InvariantCulture);
+
+        Assert.That(bgBrush, Is.Not.Null);
+        Assert.That(fgBrush, Is.Not.Null);
     }
 }
