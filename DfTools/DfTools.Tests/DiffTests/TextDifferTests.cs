@@ -1,5 +1,8 @@
+using DiffPlex;
+using DiffPlex.Chunkers;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 using DfTools.Diff;
-using NUnit.Framework;
 
 namespace DfTools.Tests.DiffTests;
 
@@ -110,5 +113,86 @@ public class TextDifferTests
 
         // Assert
         Assert.That(result.HasDifferences, Is.True);
+    }
+
+    [Test]
+    public void Constructor_WithNullDiffBuilder_ShouldThrowArgumentNullException()
+    {
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => new TextDiffer(null!));
+    }
+
+    [Test]
+    public void CompareSideBySide_WithDeletionOnly_ShouldSetHasDifferencesTrue()
+    {
+        // Act (oldText has lines, newText is empty)
+        SideBySideDiffResult result = _differ.CompareSideBySide("Line deleted", "");
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.HasDifferences, Is.True);
+            Assert.That(result.OldText.Lines.Any(l => l.Type == DiffChangeType.Deleted), Is.True);
+        });
+    }
+
+    [Test]
+    public void CompareSideBySide_WithInsertionOnly_ShouldSetHasDifferencesTrue()
+    {
+        // Act (oldText is empty, newText has lines)
+        SideBySideDiffResult result = _differ.CompareSideBySide("", "Line inserted");
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.HasDifferences, Is.True);
+            Assert.That(result.NewText.Lines.Any(l => l.Type == DiffChangeType.Inserted), Is.True);
+        });
+    }
+
+    [Test]
+    public void CompareSideBySide_WithNullTextInPieceModel_ShouldDefaultToEmptyString()
+    {
+        // Arrange
+        var mockBuilder = new NSubstituteCustomDiffBuilder(new DiffPlex.DiffBuilder.Model.DiffPiece { Position = 1, Text = null, Type = ChangeType.Unchanged, SubPieces = null });
+        var differ = new TextDiffer(mockBuilder);
+
+        // Act
+        var result = differ.CompareSideBySide("a", "b");
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.OldText.Lines[0].Text, Is.EqualTo(string.Empty));
+            Assert.That(result.OldText.Lines[0].SubPieces, Is.Empty);
+        });
+    }
+
+    private class NSubstituteCustomDiffBuilder : ISideBySideDiffBuilder
+    {
+        private readonly DiffPlex.DiffBuilder.Model.DiffPiece _piece;
+
+        public NSubstituteCustomDiffBuilder(DiffPlex.DiffBuilder.Model.DiffPiece piece)
+        {
+            _piece = piece;
+        }
+
+        public SideBySideDiffModel BuildDiffModel(string oldText, string newText)
+        {
+            var model = new SideBySideDiffModel();
+            model.OldText.Lines.Add(_piece);
+            model.NewText.Lines.Add(_piece);
+            return model;
+        }
+
+        public SideBySideDiffModel BuildDiffModel(string oldText, string newText, bool ignoreWhitespace)
+        {
+            return BuildDiffModel(oldText, newText);
+        }
+
+        public SideBySideDiffModel BuildDiffModel(string oldText, string newText, bool ignoreWhitespace, bool ignoreCase, IChunker chunker)
+        {
+            return BuildDiffModel(oldText, newText);
+        }
     }
 }

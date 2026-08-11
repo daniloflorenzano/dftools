@@ -63,7 +63,7 @@ public class TextDiffer : ITextDiffer
             ChangeType.Inserted => DiffChangeType.Inserted,
             ChangeType.Imaginary => DiffChangeType.Imaginary,
             ChangeType.Modified => DiffChangeType.Modified,
-            _ => DiffChangeType.Unchanged
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
 }
