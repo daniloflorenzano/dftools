@@ -6,7 +6,7 @@ This project is a personal exploration aimed at validating development and tests
 
 Df stands for Danilo Florenzano (very creative, don't you think?)
 
-<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/c0f29513-6076-4059-8230-6fe54ca5ae23" />
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/d5899edc-fbdf-4e1e-b66a-7dc3359dfd7b" />
 
 ## Features
 
